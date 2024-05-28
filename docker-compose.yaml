@@ -4,8 +4,6 @@ services:
     restart: unless-stopped
     container_name: mongodb
     image: mongo:5.0.1
-    ports:
-      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongodb
       MONGO_INITDB_ROOT_PASSWORD: mongodb
@@ -34,8 +32,6 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - mongodb
-    ports:
-      - "4567:4567"
     environment:
       MONGO_URL: "mongodb://mongodb:27017"
     networks:

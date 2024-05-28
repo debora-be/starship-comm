@@ -18,6 +18,7 @@
             rubyPackages_3_3.rails 
             rubyPackages_3_3.sinatra
             bundler
+            act
           ]
           ++ optional stdenv.isLinux [ inotify-tools ]
           ++ optional stdenv.isDarwin terminal-notifier
