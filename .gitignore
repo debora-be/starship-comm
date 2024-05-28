@@ -1,0 +1,5 @@
+# flyctl launch added from .ruby-lsp/.gitignore
+.ruby-lsp/**/*
+fly.toml
+.direnv
+.vscode
