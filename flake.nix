@@ -17,7 +17,7 @@
             ruby_3_3 
             rubyPackages_3_3.rails 
             rubyPackages_3_3.sinatra
-            glibcLocales 
+            bundler
           ]
           ++ optional stdenv.isLinux [ inotify-tools ]
           ++ optional stdenv.isDarwin terminal-notifier
