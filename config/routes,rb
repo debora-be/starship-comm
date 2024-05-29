@@ -1,0 +1,8 @@
+Rails.application.routes.draw do
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
+
+    resources :products, only: [:index, :show]
+    resources :orders, only: [:create]
+  end
+  
