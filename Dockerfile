@@ -8,7 +8,7 @@ RUN bundle install
 
 COPY app.rb .
 COPY public ./public
-COPY views ./views
+COPY app/views ./app/views
 COPY inventory.csv .
 
 EXPOSE 4567

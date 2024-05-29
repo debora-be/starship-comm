@@ -4,6 +4,8 @@ services:
     restart: unless-stopped
     container_name: mongodb
     image: mongo:5.0.1
+    ports:
+      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongodb
       MONGO_INITDB_ROOT_PASSWORD: mongodb
@@ -26,19 +28,49 @@ services:
     networks:
       - backend
 
+  redis:
+    restart: unless-stopped
+    container_name: redis
+    image: redis:5.0.1
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+    command: redis-server --requirepass redispass --appendonly yes
+    networks:
+      - backend
+
+  web:
+    build: .
+    command: bundle exec rails server -b 0.0.0.0
+    volumes:
+      - ".:/app"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - backend
+
   ruby-app:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
       - mongodb
+      - redis
+    ports:
+      - "4567:4567"
     environment:
       MONGO_URL: "mongodb://mongodb:27017"
+      REDIS_URL: "redis://redis:6379/0"
     networks:
       - backend
 
 volumes:
   mongodb:
+  redis:
 
 networks:
   backend:
