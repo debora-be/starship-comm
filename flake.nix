@@ -14,9 +14,9 @@
 
         inputs = with pkgs;
           [ 
-            ruby_3_3 
-            rubyPackages_3_3.rails 
-            rubyPackages_3_3.sinatra
+            ruby_3_1 
+            rubyPackages_3_1.rails 
+            rubyPackages_3_1.sinatra
             bundler
             act
           ]

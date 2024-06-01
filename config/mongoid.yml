@@ -1,0 +1,6 @@
+development:
+  clients:
+    default:
+      uri: "mongodb+srv://arobedbee:n1GL8ZlgRyW8lsAr@cluster0.au3pzzu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+      options: 
+        server_selection_timeout: 5
