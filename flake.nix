@@ -9,23 +9,26 @@
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        inherit (pkgs.lib) optional optionals;
         pkgs = import nixpkgs { inherit system; };
 
         inputs = with pkgs;
           [ 
-            ruby_3_1 
-            rubyPackages_3_1.rails 
-            rubyPackages_3_1.sinatra
+            ruby_3_3 
+            rubyPackages_3_3.rails 
+            rubyPackages_3_3.sinatra
             bundler
             act
+            msgpack # explicitly add msgpack
+            libyaml
+            zlib.dev
+            libffi.dev
           ]
-          ++ optional stdenv.isLinux [ inotify-tools ]
-          ++ optional stdenv.isDarwin terminal-notifier
-          ++ optionals stdenv.isDarwin
-          (with darwin.apple_sdk.frameworks; [ CoreFoundation CoreServices ]);
-      in with pkgs; {
-        devShells.default = mkShell {
+          ++ pkgs.lib.optional pkgs.stdenv.isLinux [ pkgs.inotify-tools ]
+          ++ pkgs.lib.optional pkgs.stdenv.isDarwin pkgs.terminal-notifier
+          ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
+          (with pkgs.darwin.apple_sdk.frameworks; [ CoreFoundation CoreServices ]);
+      in {
+        devShells.default = pkgs.mkShell {
           name = "starship-comm";
           packages = inputs;
         };
