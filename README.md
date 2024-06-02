@@ -1,24 +1,21 @@
-# README
+# Starship Comm 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Running Nix inside Docker
 
-Things you may want to cover:
+Have you ever dreamt of running Nix like magic? Well, we can make it happen!
 
-* Ruby version
+### Run the container and let the magic begin
+```sh
+docker pull deborabe/nix-direnv-image:latest
+docker run -it -p 3001:3000 deborabe/nix-direnv-image:latest
+```
 
-* System dependencies
+### Overview
 
-* Configuration
+This commands will set up a Ruby on Rails environment inside a Docker container using Nix. It ensures that all dependencies are managed and isolated, providing a consistent development and production environment.
 
-* Database creation
+### Features
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- **Nix Package Manager**: manages all dependencies using Nix for a reproducible environment
+- **Ruby on Rails**: runs a Rails application inside the container
+- **direnv**: automatically loads environment variables for your project
