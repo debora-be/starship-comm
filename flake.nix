@@ -34,7 +34,8 @@
             src = ./.;
             buildInputs = inputs;
             buildPhase = ''
-              bundle install --path vendor/bundle
+              bundle config set path 'vendor/bundle'
+              bundle install
             '';
             installPhase = ''
               mkdir -p $out
@@ -48,7 +49,7 @@
           packages = inputs;
           shellHook = ''
             eval "$(direnv hook bash)"
-            bundle install --path vendor/bundle
+            bundle config set path 'vendor/bundle'
           '';
         };
       }
