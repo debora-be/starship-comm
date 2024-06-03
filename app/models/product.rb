@@ -3,10 +3,10 @@ class Product
   include Mongoid::Timestamps
   field :name, type: String
   field :description, type: String
-  field :price, type: Decimal
+  field :price, type: BigDecimal
   field :stock, type: Integer
   field :demand, type: Integer
-  field :competitor_price, type: Decimal
+  field :competitor_price, type: BigDecimal
   field :created_at, type: Time
   field :updated_at, type: Time
 end
