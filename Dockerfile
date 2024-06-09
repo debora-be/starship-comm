@@ -1,4 +1,4 @@
-# Use the base image of Alpine Linux
+# Use the Alpine Linux base image
 FROM alpine:latest
 
 # Install Git, Curl, Bash, XZ, Sudo, and other basic packages
@@ -15,7 +15,7 @@ RUN mkdir -p /root/.config/nix && \
 # Install direnv
 RUN apk add --no-cache direnv
 
-# Add Nix to PATH
+# Add Nix to the PATH
 ENV PATH=/root/.nix-profile/bin:/root/.nix-profile/sbin:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:$PATH
 
 # Install nix-direnv
@@ -30,5 +30,15 @@ WORKDIR /workspace
 # Copy project files to the working directory
 COPY . /workspace
 
-# Run the container's shell
-CMD ["bash"]
+# Adjust permissions for the non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN chown -R appuser:appgroup /workspace /nix /root/.config /root/.nix-profile
+
+# Configure passwordless sudo for the appuser
+RUN echo "appuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Switch to the non-root user
+USER appuser
+
+# Run the container shell and execute direnv allow
+CMD ["bash", "-c", "sudo chown -R appuser:appgroup /workspace && direnv allow && nix develop --extra-experimental-features nix-command --extra-experimental-features flakes --command bash"]
