@@ -1,34 +1,34 @@
-# Nix builder
-FROM nixos/nix:latest AS builder
+# Use the base image of Alpine Linux
+FROM alpine:latest
 
-# Copy our source and setup our working dir.
-COPY . /tmp/build
-WORKDIR /tmp/build
+# Install Git, Curl, Bash, XZ, Sudo, and other basic packages
+RUN apk update && \
+    apk add --no-cache git curl bash xz sudo shadow && \
+    curl -L https://nixos.org/nix/install | sh -s -- --daemon && \
+    mkdir -p /etc/nix && \
+    echo "build-users-group = nixbld" > /etc/nix/nix.conf
 
-# Build our Nix environment
-RUN nix \
-    --extra-experimental-features "nix-command flakes" \
-    --option filter-syscalls false \
-    build
+# Configure Nix and enable Flakes
+RUN mkdir -p /root/.config/nix && \
+    echo "experimental-features = nix-command flakes" >> /root/.config/nix/nix.conf
 
-# Copy the Nix store closure into a directory. The Nix store closure is the
-# entire set of Nix store values that we need for our build.
-RUN mkdir /tmp/nix-store-closure
-RUN cp -R $(nix-store -qR ./result) /tmp/nix-store-closure
+# Install direnv
+RUN apk add --no-cache direnv
 
-# Final image is based on scratch. We copy a bunch of Nix dependencies
-# but they're fully self-contained so we don't need Nix anymore.
-FROM scratch
+# Add Nix to PATH
+ENV PATH=/root/.nix-profile/bin:/root/.nix-profile/sbin:/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:$PATH
 
-WORKDIR /app
+# Install nix-direnv
+RUN nix-env -iA nixpkgs.nix-direnv
 
-# Copy /nix/store
-COPY --from=builder /tmp/nix-store-closure /nix/store
-COPY --from=builder /tmp/build/result /app
+# Configure direnv to use Nix flakes
+RUN echo 'eval "$(direnv hook bash)"' >> /root/.bashrc
 
-# Set environment variables for Ruby and Bundler
-ENV GEM_HOME=/nix/store
-ENV BUNDLE_PATH=$GEM_HOME
-ENV PATH="/nix/store/bin:$PATH"
+# Set the working directory
+WORKDIR /workspace
 
-CMD ["/app/bin/rails", "server", "-b", "0.0.0.0"]
+# Copy project files to the working directory
+COPY . /workspace
+
+# Run the container's shell
+CMD ["bash"]
