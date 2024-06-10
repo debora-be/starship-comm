@@ -1,21 +1,14 @@
 # Starship Comm 
 
-## Running Nix inside Docker
+A magic environment for a soon-to-be Ruby app.
 
-Have you ever dreamt of running Nix like magic? Well, we can make it happen!
+### Build the environment through the following command
 
-### Run the container and let the magic begin
 ```sh
-docker pull deborabe/nix-direnv-image:latest
-docker run -it -p 3001:3000 deborabe/nix-direnv-image:latest
+docker build -t ruby-nix .  
+docker run -it --rm -v $(pwd):/workspace -p 3000:3000 ruby-nix
 ```
 
-### Overview
+✨ Access `http://0.0.0.0:3000` and see for yourself ✨
 
-This commands will set up a Ruby on Rails environment inside a Docker container using Nix. It ensures that all dependencies are managed and isolated, providing a consistent development and production environment.
-
-### Features
-
-- **Nix Package Manager**: manages all dependencies using Nix for a reproducible environment
-- **Ruby on Rails**: runs a Rails application inside the container
-- **direnv**: automatically loads environment variables for your project
+![Screenshot from 2024-06-09 22-17-12](https://github.com/debora-be/starship-comm/assets/72231462/b5bfc117-1861-410c-b2b1-fbbeaca6dc0e)
