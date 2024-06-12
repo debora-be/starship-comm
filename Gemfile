@@ -17,6 +17,12 @@ gem 'rake', '13.2.1'
 
 gem 'sidekiq'
 
+gem 'sidekiq-scheduler'
+
+gem 'redis'
+
+gem 'csv'
+
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
 
