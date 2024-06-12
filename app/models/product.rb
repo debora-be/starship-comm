@@ -1,12 +1,19 @@
 class Product
   include Mongoid::Document
   include Mongoid::Timestamps
+
   field :name, type: String
   field :description, type: String
-  field :price, type: BigDecimal
+  field :price, type: Float
   field :stock, type: Integer
-  field :demand, type: Integer
-  field :competitor_price, type: BigDecimal
-  field :created_at, type: Time
-  field :updated_at, type: Time
+  field :demand, type: Integer, default: 0
+  field :competitor_price, type: Float
+
+  has_many :orders
+  has_many :price_logs
+
+  def dynamic_price
+    # Implement your dynamic pricing logic here
+    self.price + (self.demand * 0.1) - (self.stock * 0.05) + (self.competitor_price || 0)
+  end
 end
