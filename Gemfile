@@ -13,8 +13,9 @@ gem "puma", ">= 5.0"
 
 gem "mongoid"
 
-# Gemfile
 gem 'rake', '13.2.1'
+
+gem 'sidekiq'
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
