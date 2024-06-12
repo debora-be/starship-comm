@@ -5,12 +5,16 @@ class Product
   field :name, type: String
   field :description, type: String
   field :price, type: Float
+  field :category, type: String
+  field :qty, type: Integer
   field :stock, type: Integer
   field :demand, type: Integer, default: 0
   field :competitor_price, type: Float
 
   has_many :orders
   has_many :price_logs
+
+  validates :name, :category, :qty, :price, presence: true
 
   def dynamic_price
     # Implement your dynamic pricing logic here
