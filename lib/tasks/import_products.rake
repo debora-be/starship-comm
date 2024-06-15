@@ -1,26 +1,19 @@
-# lib/tasks/import_products.rake
+require 'csv'
 
 namespace :import do
-  desc "Import products from CSV"
+  desc 'Import products from a CSV file'
   task products: :environment do
-    require 'csv'
+    file_path = 'db/seeds/inventory.csv'
 
-    csv_file_path = Rails.root.join('db', 'seeds', 'inventory.csv')
-    
-    unless File.exist?(csv_file_path)
-      puts "CSV file not found: #{csv_file_path}"
-      exit
-    end
-
-    CSV.foreach(csv_file_path, headers: true) do |row|
+    CSV.foreach(file_path, headers: true) do |row|
       product = Product.find_or_initialize_by(name: row['NAME'])
-      product.update!(
+      product.update(
         category: row['CATEGORY'],
-        qty: row['QTY'],
-        price: row['DEFAULT_PRICE']
+        default_price: row['DEFAULT_PRICE'].to_f,
+        qty: row['QTY'].to_i,
+        price: row['DEFAULT_PRICE'].to_f 
       )
     end
-
-    puts "Products imported successfully"
+    puts 'Products imported successfully!'
   end
 end
