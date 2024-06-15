@@ -7,3 +7,17 @@ development:
         ssl_verify: false
         server_selection_timeout: 5
         retry_writes: true
+
+test: 
+  clients:
+    default:
+      uri: <%= ENV['MONGODB_URI'] %>
+      options:
+        ssl: true
+        ssl_verify: false
+        server_selection_timeout: 5
+        retry_writes: true
+
+options:
+  use_utc: true
+  use_activesupport_time_zone: true
