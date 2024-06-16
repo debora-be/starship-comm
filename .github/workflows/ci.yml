@@ -25,9 +25,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Pull Ruby Docker image with Nix
-      run: docker pull deborabe/nix-direnv-image:latest
-
     - name: Remove existing Ruby container if exists
       run: |
         if [ $(docker ps -a -q -f name=ruby-app) ]; then
@@ -38,5 +35,15 @@ jobs:
       env:
         MONGODB_URI: ${{ secrets.MONGODB_URI }}
       run: |
-        docker run -d --name ruby-app -e MONGODB_URI="${MONGODB_URI}" -p 3001:3000 deborabe/nix-direnv-image:latest 
+        docker run -d --name ruby-app -e MONGODB_URI="${MONGODB_URI}" -p 3001:3000 deborabe/nix-direnv-image:latest
+
+    - name: Inspect container environment
+      run: |
+        docker exec ruby-app bash -c "env"
+
+    - name: Monitor memory usage
+      run: |
+        docker stats --no-stream
+
+    
 
