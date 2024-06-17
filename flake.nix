@@ -26,6 +26,7 @@
             direnv
             openssl
             foreman
+            mongosh
           ]
           ++ pkgs.lib.optional pkgs.stdenv.isLinux [ pkgs.inotify-tools ]
           ++ pkgs.lib.optional pkgs.stdenv.isDarwin pkgs.terminal-notifier
@@ -56,7 +57,9 @@
           shellHook = ''
             eval "$(direnv hook bash)"
             bundle config set path 'vendor/bundle'
+            bundle exec rake import:products --trace
             bundle exec rails server
+            bundle exec rspec
           '';
         };
       }

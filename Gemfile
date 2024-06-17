@@ -13,8 +13,15 @@ gem "puma", ">= 5.0"
 
 gem "mongoid"
 
-# Gemfile
 gem 'rake', '13.2.1'
+
+gem 'sidekiq'
+
+gem 'sidekiq-scheduler'
+
+gem 'redis'
+
+gem 'csv'
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
@@ -53,6 +60,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "rspec-rails"
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
@@ -66,3 +74,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+
