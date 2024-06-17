@@ -58,6 +58,8 @@
             eval "$(direnv hook bash)"
             bundle config set path 'vendor/bundle'
             bundle exec rake import:products --trace
+            bundle exec rails server
+            bundle exec rspec
           '';
         };
       }
